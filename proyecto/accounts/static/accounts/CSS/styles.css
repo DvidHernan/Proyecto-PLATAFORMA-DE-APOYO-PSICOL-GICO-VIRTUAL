@@ -23,6 +23,14 @@ h2 {
     width: 300px;
     text-align: center;
 }
+.container {
+    background-color: rgba(220, 231, 255, 0);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    text-align: left;
+}
 
 /* Estilos del formulario */
 form {
@@ -50,19 +58,45 @@ input {
     box-sizing: border-box;
 }
 
-button {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+.button2 {
+    display: inline-block;
     border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 20px;
+    padding: 20px;
+    width: 200px;
+    transition: all 0.5s;
     cursor: pointer;
-    font-size: 16px;
+    margin: 5px;
 }
 
-button:hover {
-    background-color: #45a049;
-}
+.button2 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+
+  .button2 span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .button2:hover span {
+    padding-right: 25px;
+  }
+  
+  .button2:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
 
 /* Estilos de mensajes de error */
 .error {
@@ -70,6 +104,29 @@ button:hover {
     font-size: 14px;
     text-align: center;
 }
+
+.button {
+    display: inline-block;
+    padding: 10px 5px;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+  }
+  
+  .button:hover {background-color: #3e8e41}
+  
+  .button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
 
 /* Enlace de registro */
 .register-link {

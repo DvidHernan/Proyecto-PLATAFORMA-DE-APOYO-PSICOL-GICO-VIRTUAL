@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>Registro</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/styles.css' %}">
 </head>
 <body>
-    <h2>Register</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
+    <div class="container">
+        <h2>Registro</h2>
+        <form method="post" class="form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button2" style="vertical-align:middle"><span>Register </span></button>
+        </form>
 
-    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
 </body>
 </html>
