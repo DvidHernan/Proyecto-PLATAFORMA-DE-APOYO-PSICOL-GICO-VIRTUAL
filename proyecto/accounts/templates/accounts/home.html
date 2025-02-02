@@ -1,11 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f9; /* Color de fondo suave */
+            color: #333; /* Color de texto */
+        }
+
+        h1 {
+            color: #3c8dbc; /* Título color azul */
+            margin-top: 50px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3c8dbc;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #0073e6;
+        }
+
+        .funcionalidad {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 15px;
+            display: inline-block;
+            border-radius: 8px;
+            width: 250px;
+            background-color: #fff; /* Fondo blanco para las funcionalidades */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Efecto al pasar el mouse sobre las funcionalidades */
+        .funcionalidad:hover {
+            transform: translateY(-5px); /* Desplazamiento hacia arriba */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+        }
+
+        .funcionalidad h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .funcionalidad p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* Estilos para los botones de acción */
+        button {
+            padding: 10px 20px;
+            background-color: #3c8dbc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0073e6; /* Cambio de color al pasar el mouse */
+        }
+
+        /* Estilos para el layout */
+        .funcionalidades-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .funcionalidad {
+            margin: 20px;
+        }
+
+        /* Estilos de la sesión de usuario */
+        .session-info {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Welcome to the Home page!</h2>
-    <p>You are logged in!</p>
-    <a href="{% url 'logout' %}">Logout</a>
+    <h1>Bienvenido a la Plataforma</h1>
+    
+    <!-- Verificar si el usuario está autenticado -->
+    {% if user.is_authenticated %}
+        <div class="session-info">
+            <p>Bienvenido, {{ user.username }}</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    {% else %}
+        <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
+    {% endif %}
+    
+    <div class="funcionalidades-container">
+        {% for func in funcionalidades %}
+            <div class="funcionalidad">
+                <h3>{{ func.nombre }}</h3>
+                <p>{{ func.descripcion }}</p>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

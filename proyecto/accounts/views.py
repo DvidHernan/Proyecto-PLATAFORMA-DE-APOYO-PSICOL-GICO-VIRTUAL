@@ -36,5 +36,10 @@ def logout_view(request):
 # Vista protegida que requiere estar logueado
 @login_required
 def home_view(request):
+    funcionalidades = [
+        {"nombre": "Agendar Cita", "descripcion": "Reserva una cita con un especialista."},
+        {"nombre": "Ver Historial", "descripcion": "Accede a tu historial de citas y sesiones."},
+        {"nombre": "Chat en Vivo", "descripcion": "Comunícate en tiempo real con un experto."},
+    ]
     return render(request, 'accounts/home.html')
 
