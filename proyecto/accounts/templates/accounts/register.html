@@ -6,6 +6,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/styles.css' %}">
 </head>
 <body>
+    <div class="video-background">
+        <video autoplay muted loop id="myVideo">
+            <source src="{% static 'accounts/videos/mi-video.mp4' %}" type="video/mp4">
+        </video>
+    </div>
     <div class="container">
         <h2>Registro</h2>
         <form method="post" class="form">
