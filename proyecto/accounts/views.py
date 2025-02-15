@@ -55,15 +55,20 @@ def home_view(request):
     ]
     assistant_id = "asst_ecntz87UkJE85BVqeeyjei7Z"
     
-    conversation, created = Conversation.objects.get_or_create(user=request.user)
-
-    # Si es nueva, crea un thread en OpenAI y guárdalo
-    if created or not conversation.thread_id:
+    # Revisamos si ya existe un thread para la sesión actual
+    if "thread_id" not in request.session:
+        # No existe thread, así que creamos uno nuevo para la sesión actual
         thread = client.beta.threads.create()
-        conversation.thread_id = thread.id
-        conversation.save()
+        request.session["thread_id"] = thread.id
     else:
-        thread_id = conversation.thread_id
+        thread_id = request.session["thread_id"]
+
+    # También podemos guardar o relacionar este thread con una conversación en la base de datos
+    conversation, created = Conversation.objects.get_or_create(user=request.user, defaults={'thread_id': request.session["thread_id"]})
+    if not created and conversation.thread_id != request.session["thread_id"]:
+        # Si la conversación ya existe pero el thread_id difiere (por ejemplo, por reinicio de sesión), actualizamos.
+        conversation.thread_id = request.session["thread_id"]
+        conversation.save()
     
     assistant_response = None
     if request.method == 'POST' and 'question' in request.POST:

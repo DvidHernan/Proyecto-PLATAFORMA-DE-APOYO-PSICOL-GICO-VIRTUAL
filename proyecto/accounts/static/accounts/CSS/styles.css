@@ -168,3 +168,59 @@ input:focus {
 .register-link a:hover {
     text-decoration: underline;
 }
+
+#chatbot-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #00A4CC;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#chatbot-btn img {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(1);
+}
+
+/* Burbuja de chat */
+#chat-container {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    width: 300px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: none; /* Ocultarlo por defecto */
+    z-index: 999;
+    padding: 10px;
+}
+
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    justify-content: flex-end;
+}
+
+.chat-content {
+    overflow-y: auto;
+    max-height: 300px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    resize: none;
+}
