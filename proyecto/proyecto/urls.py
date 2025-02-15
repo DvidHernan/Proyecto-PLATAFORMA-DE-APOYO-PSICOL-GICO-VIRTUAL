@@ -16,10 +16,12 @@ Including another URLconf
 # proyecto/urls.py (el archivo de URL de tu proyecto)
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import home_view  # Asegúrate de importar la vista correcta
-
+from accounts.views import login_view, register_view, home_view, logout_view
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),  # Si tienes otras urls en accounts
-    path('', home_view, name='home'),  # La ruta vacía (la página principal)
+    path('login/', login_view, name='login'),
+    path('register/', register_view, name='register'),
+    path('home/', home_view, name='home'),
+    path('logout/', logout_view, name='logout'),  # Agregar esta línea
+    path('ask-question/', home_view, name='ask_question'),
 ]

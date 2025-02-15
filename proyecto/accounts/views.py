@@ -1,7 +1,20 @@
+from openai import OpenAI
+import json
+import time
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.conf import settings  # Para obtener la API Key
+from django.http import JsonResponse
+from .models import Conversation, Message
+from django.utils import timezone
+
+
+# Configuración de OpenAI
+client = OpenAI(api_key = settings.OPENAI_API_KEY)
+
+
 
 # Vista para el login
 def login_view(request):
@@ -39,7 +52,67 @@ def home_view(request):
     funcionalidades = [
         {"nombre": "Agendar Cita", "descripcion": "Reserva una cita con un especialista."},
         {"nombre": "Ver Historial", "descripcion": "Accede a tu historial de citas y sesiones."},
-        {"nombre": "Chat en Vivo", "descripcion": "Comunícate en tiempo real con un experto."},
     ]
-    return render(request, 'accounts/home.html')
+    assistant_id = "asst_ecntz87UkJE85BVqeeyjei7Z"
+    
+    conversation, created = Conversation.objects.get_or_create(user=request.user)
 
+    # Si es nueva, crea un thread en OpenAI y guárdalo
+    if created or not conversation.thread_id:
+        thread = client.beta.threads.create()
+        conversation.thread_id = thread.id
+        conversation.save()
+    else:
+        thread_id = conversation.thread_id
+    
+    assistant_response = None
+    if request.method == 'POST' and 'question' in request.POST:
+        question = request.POST['question']
+        # Guardar el mensaje del usuario en la BD
+        Message.objects.create(conversation=conversation, role="user", content=question, timestamp=timezone.now())
+        # Recuperar los últimos 10 mensajes para el contexto
+        last_messages = Message.objects.filter(conversation=conversation).order_by('-timestamp')[:10]
+        messages = [{"role": msg.role, "content": msg.content} for msg in reversed(last_messages)]
+
+        message = client.beta.threads.messages.create(
+          thread_id=conversation.thread_id,
+            role="user",
+            content=question
+        )
+        run = client.beta.threads.runs.create(
+            thread_id = conversation.thread_id,
+            assistant_id= assistant_id,
+        )
+        
+        while True:
+            run_status = client.beta.threads.runs.retrieve(
+                thread_id=conversation.thread_id,
+                run_id=run.id
+            )
+            if run_status.status == "completed":
+                break
+            time.sleep(1) 
+        '''
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",  # Modelo de OpenAI
+            messages=[{"role": "user", "content": question}],
+            stream=False,
+            max_tokens=150
+        )
+        '''
+        # Obtener la respuesta del asistente
+        response_messages = client.beta.threads.messages.list(thread_id=conversation.thread_id)
+        assistant_response = response_messages.data[0].content[0].text.value.strip()
+
+        # Guardar la respuesta en la BD
+        Message.objects.create(conversation=conversation, role="assistant", content=assistant_response, timestamp=timezone.now())
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':  # Verifica si la solicitud es AJAX
+            return JsonResponse({'assistant_response': assistant_response})  # Devuelve la respuesta en formato JSON
+
+    return render(request, 'accounts/home.html', {
+        'funcionalidades': funcionalidades,
+        'assistant_response': assistant_response,
+    })
+
+    return redirect('home')  # Redirige a la página principal si no es POST

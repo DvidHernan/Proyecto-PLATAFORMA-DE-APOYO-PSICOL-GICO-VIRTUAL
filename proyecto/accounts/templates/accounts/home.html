@@ -122,5 +122,41 @@
             </div>
         {% endfor %}
     </div>
+
+    <h3>Chat en Vivo</h3>
+<div>
+    <textarea id="question" placeholder="Escribe tu pregunta..."></textarea>
+    <button id="ask-btn">Enviar Pregunta</button>
+</div>
+
+<div id="response-container"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#ask-btn').click(function() {
+            var question = $('#question').val();
+
+            if (question) {
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'ask_question' %}",  // URL de la vista en Django
+                    data: {
+                        'question': question,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'  // Seguridad en POST
+                    },
+                    success: function(response) {
+                        $('#response-container').html('<p><strong>Respuesta del Asistente:</strong> ' + response.assistant_response + '</p>');
+                    },
+                    error: function() {
+                        alert("Hubo un error al procesar la solicitud.");
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>
+
+

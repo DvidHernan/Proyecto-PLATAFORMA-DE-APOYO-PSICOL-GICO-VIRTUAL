@@ -11,6 +11,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+
+# Inicializar el entorno
+env = environ.Env()
+environ.Env.read_env()
+
+# Definir tu API Key de OpenAI (DeepSeek usa OpenAI)
+OPENAI_API_KEY = env('OPENAI_API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +35,8 @@ SECRET_KEY = 'django-insecure-(&hsyq^a6olkv4zbn6$88x$)@qyw@+dn(ci=jcuo%u01#oil38
 DEBUG = True
 LOGIN_REDIRECT_URL = 'home'
 ALLOWED_HOSTS = []
+
+
 
 
 # Application definition
