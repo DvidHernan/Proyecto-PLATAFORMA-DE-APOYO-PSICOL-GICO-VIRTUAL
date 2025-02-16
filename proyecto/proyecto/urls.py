@@ -24,4 +24,6 @@ urlpatterns = [
     path('home/', home_view, name='home'),
     path('logout/', logout_view, name='logout'),  # Agregar esta línea
     path('ask-question/', home_view, name='ask_question'),
+    path('', home_view, name='home'),
+    path('accounts/', include('accounts.urls')),
 ]

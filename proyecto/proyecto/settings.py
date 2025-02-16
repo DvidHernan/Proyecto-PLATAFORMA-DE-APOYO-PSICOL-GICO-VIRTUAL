@@ -133,7 +133,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Asegúrate de que esta línea esté presente
+    BASE_DIR /"accounts"/"static",  # Asegúrate de que esta línea esté presente
 ]
 
 # Default primary key field type
