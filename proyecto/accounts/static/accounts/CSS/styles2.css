@@ -1,0 +1,301 @@
+ /* Estilos generales */
+ body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+h1 {
+    color: #3c8dbc;
+    margin-top: 50px;
+}
+
+p {
+    font-size: 18px;
+    color: #555;
+}
+
+a {
+    text-decoration: none;
+    color: #3c8dbc;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #0073e6;
+}
+
+.funcionalidad {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 15px;
+    display: inline-block;
+    border-radius: 8px;
+    width: 250px;
+    background-color: #fff; /* Fondo blanco para las funcionalidades */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.funcionalidad:hover {
+    transform: translateY(-5px); /* Desplazamiento hacia arriba */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}
+
+.funcionalidad h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.funcionalidad p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Layout */
+.funcionalidades-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.funcionalidad {
+    margin: 20px;
+}
+
+/* Sesión de usuario */
+.session-info {
+    margin-top: 20px;
+}
+
+/* Botón del Chatbot */
+#chatbot-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: #00A4CC;
+  padding: 15px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+#chatbot-btn:hover {
+  transform: scale(1.1);
+}
+#chatbot-btn img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+/* Contenedor del Chat */
+#chat-container {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 320px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: none;  /* Oculto por defecto */
+  z-index: 999;
+  padding: 10px;
+  max-height: 500px;
+  animation: fadeIn 0.5s ease-out;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.chat-content {
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.user-message {
+  background-color: #4CAF50;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 0;
+}
+
+.assistant-message {
+  background-color: #f0f0f0;
+  color: #333;
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
+}
+
+/* Estilo del ícono "pensando" */
+.thinking {
+  text-align: center;
+  margin: 10px 0;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  resize: none;
+  font-size: 14px;
+}
+
+.button{
+    width:300px;
+    height:50px;
+    background: linear-gradient(to left top, #02ebfc 50%, #1cc2ce 50%);
+    border-style: none;
+    color:#fff;
+    font-size:19px;
+    letter-spacing: 3px;
+    font-family: 'Lato';
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    padding: 0px;
+    overflow: hidden;
+    transition: all .5s;
+    box-shadow: 0px 1px 2px rgba(0,0,0,.2);
+}
+.button span{
+    position: absolute;
+    display: block;
+}
+.button span:nth-child(1){
+    height: 3px;
+    width:200px;
+    top:0px;
+    left:-200px;
+    background: linear-gradient(to right, rgba(0,0,0,0), #f6e58d);
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
+    animation: span1 2s linear infinite;
+    animation-delay: 1s;
+}
+
+@keyframes span1{
+    0%{
+        left:-200px
+    }
+    100%{
+        left:200px;
+    }
+}
+.button span:nth-child(2){
+    height: 70px;
+    width: 3px;
+    top:-70px;
+    right:0px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0), #f6e58d);
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    animation: span2 2s linear infinite;
+    animation-delay: 2s;
+}
+@keyframes span2{
+    0%{
+        top:-70px;
+    }
+    100%{
+        top:70px;
+    }
+}
+.button span:nth-child(3){
+    height:3px;
+    width:200px;
+    right:-200px;
+    bottom: 0px;
+    background: linear-gradient(to left, rgba(0,0,0,0), #f6e58d);
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    animation: span3 2s linear infinite;
+    animation-delay: 3s;
+}
+@keyframes span3{
+    0%{
+        right:-200px;
+    }
+    100%{
+        right: 200px;
+    }
+}
+
+.button span:nth-child(4){
+    height:70px;
+    width:3px;
+    bottom:-70px;
+    left:0px;
+    background: linear-gradient(to top, rgba(0,0,0,0), #f6e58d);
+    border-top-right-radius: 1px;
+    border-top-left-radius: 1px;
+    animation: span4 2s linear infinite;
+    animation-delay: 4s;
+}
+@keyframes span4{
+    0%{
+        bottom: -70px;
+    }
+    100%{
+        bottom:70px;
+    }
+}
+
+.button:hover{
+    transition: all .5s;
+    transform: rotate(-3deg) scale(1.1);
+    box-shadow: 0px 3px 5px rgba(0,0,0,.4);
+}
+.button:hover span{
+    animation-play-state: paused;
+}
+
+.exit {
+    border: none;
+    color: white;
+    padding: 14px 28px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color:rgb(255, 0, 0); /* Color base del botón */
+    transition: transform 0.3s ease-in-out; /* Transición suave del efecto de pulsación */
+  }
+  
+  .exit:hover {
+    background-color:rgb(240, 115, 13); /* Cambia el color al pasar el cursor sobre el botón */
+  }
+  
+  .exit:active {
+    transform: scale(0.90); /* Reduce ligeramente el tamaño del botón cuando se hace clic */
+  }

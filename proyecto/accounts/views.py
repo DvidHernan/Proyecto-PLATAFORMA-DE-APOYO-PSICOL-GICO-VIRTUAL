@@ -54,6 +54,7 @@ def home_view(request):
         {"nombre": "Ver Historial", "descripcion": "Accede a tu historial de citas y sesiones."},
     ]
     assistant_id = "asst_ecntz87UkJE85BVqeeyjei7Z"
+    user_name = request.user.username
     
     # Revisamos si ya existe un thread para la sesión actual
     if "thread_id" not in request.session:
@@ -69,7 +70,13 @@ def home_view(request):
         # Si la conversación ya existe pero el thread_id difiere (por ejemplo, por reinicio de sesión), actualizamos.
         conversation.thread_id = request.session["thread_id"]
         conversation.save()
-    
+
+        message = client.beta.threads.messages.create(
+          thread_id=conversation.thread_id,
+            role="user",
+            content=f"Mi nombre es '{user_name}', llamame así"
+        )
+   
     assistant_response = None
     if request.method == 'POST' and 'question' in request.POST:
         question = request.POST['question']
@@ -78,6 +85,8 @@ def home_view(request):
         # Recuperar los últimos 10 mensajes para el contexto
         last_messages = Message.objects.filter(conversation=conversation).order_by('-timestamp')[:10]
         messages = [{"role": msg.role, "content": msg.content} for msg in reversed(last_messages)]
+        
+
 
         message = client.beta.threads.messages.create(
           thread_id=conversation.thread_id,
@@ -97,14 +106,7 @@ def home_view(request):
             if run_status.status == "completed":
                 break
             time.sleep(1) 
-        '''
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Modelo de OpenAI
-            messages=[{"role": "user", "content": question}],
-            stream=False,
-            max_tokens=150
-        )
-        '''
+
         # Obtener la respuesta del asistente
         response_messages = client.beta.threads.messages.list(thread_id=conversation.thread_id)
         assistant_response = response_messages.data[0].content[0].text.value.strip()

@@ -1,266 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <style>
-        /* Estilos generales */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        h1 {
-            color: #3c8dbc;
-            margin-top: 50px;
-        }
-
-        p {
-            font-size: 18px;
-            color: #555;
-        }
-
-        a {
-            text-decoration: none;
-            color: #3c8dbc;
-            font-weight: bold;
-        }
-
-        a:hover {
-            color: #0073e6;
-        }
-
-        .funcionalidad {
-            border: 1px solid #ddd;
-            padding: 20px;
-            margin: 15px;
-            display: inline-block;
-            border-radius: 8px;
-            width: 250px;
-            background-color: #fff; /* Fondo blanco para las funcionalidades */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* Efecto al pasar el mouse sobre las funcionalidades */
-        .funcionalidad:hover {
-            transform: translateY(-5px); /* Desplazamiento hacia arriba */
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
-        }
-
-        .funcionalidad h3 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .funcionalidad p {
-            font-size: 16px;
-            color: #666;
-        }
-
-        /* Estilos para el layout */
-        .funcionalidades-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        .funcionalidad {
-            margin: 20px;
-        }
-
-        /* Estilos de la sesión de usuario */
-        .session-info {
-            margin-top: 20px;
-        }
-
-        /* Estilo para el chat flotante */
-        #chatbot-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #00A4CC;
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        #chatbot-btn:hover {
-            transform: scale(1.1);
-        }
-
-        #chatbot-btn img {
-            width: 30px;
-            height: 30px;
-            filter: brightness(0) invert(1);
-        }
-
-        #chat-container {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
-            width: 300px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: none; /* Ocultado inicialmente */
-            z-index: 999;
-            padding: 10px;
-            max-height: 500px;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .chat-box {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            justify-content: flex-end;
-        }
-
-        .chat-content {
-            overflow-y: auto;
-            max-height: 300px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            position: relative;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 15px;
-            position: relative;
-        }
-
-        .user-message {
-            background-color: #4CAF50;
-            color: white;
-            align-self: flex-end;
-        }
-
-        .assistant-message {
-            background-color: #f0f0f0;
-            color: #333;
-            align-self: flex-start;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            resize: none;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #3c8dbc;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #0073e6;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/styles2.css' %}">
+   
 </head>
 <body>
-    <h1>Bienvenido a la Plataforma</h1>
-    {% if user.is_authenticated %}
+  <h1>Bienvenido a la Plataforma</h1>
+  {% if user.is_authenticated %}
     <div class="session-info">
-        <p>Bienvenido, {{ user.username }}</p>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Cerrar sesión</button>
-        </form>
+      <p>Bienvenido, {{ user.username }}</p>
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class = "exit"><i class="fas fa-times-circle"></i>Cerrar sesión</button>
+      </form>
     </div>
-    {% else %}
-        <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
-    {% endif %}
-
-<div class="funcionalidades-container">
+  {% else %}
+    <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
+  {% endif %}
+  
+  <div class="funcionalidades-container">
     {% for func in funcionalidades %}
-        <div class="funcionalidad">
-            <h3>{{ func.nombre }}</h3>
-            <p>{{ func.descripcion }}</p>
-        </div>
+      <div class="funcionalidad">
+        <h3>{{ func.nombre }}</h3>
+        <p>{{ func.descripcion }}</p>
+      </div>
     {% endfor %}
-</div>
-
-    <!-- Chatbot Flotante -->
-    <div id="chatbot-btn">
-        <img src="https://img.icons8.com/ios/452/chat.png" alt="Chatbot">
-    </div>
-
-    <div id="chat-container">
-        <div class="chat-box">
-            <div class="chat-content" id="chat-content"></div>
-            <textarea id="question" placeholder="Escribe tu pregunta..."></textarea>
-            <button id="ask-btn">Enviar Pregunta</button>
+  </div>
+  
+  <!-- Botón flotante del Chatbot (imagen de gatito) -->
+  <div id="chatbot-btn" title="Chat con tu Asistente">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIHapIeCiwS7x6LmNiUMsGcyA3R8dgs-nSdQ&s" alt="Chatbot Gatito">
+  </div>
+  
+  <!-- Contenedor del Chat -->
+  <div id="chat-container">
+    <div class="chat-box">
+      <div class="chat-content" id="chat-content">
+        {% for message in messages %}
+          <div class="message {% if message.role == 'user' %}user-message{% else %}assistant-message{% endif %}">
+            {{ message.content }}
+          </div>
+        {% endfor %}
+        <!-- Ícono de "pensando" (oculto por defecto) -->
+        <div id="thinking-icon" class="message assistant-message thinking" style="display: none;">
+          <img src="https://i.gifer.com/ZKZg.gif" alt="Pensando..." width="30">
         </div>
+      </div>
+      <form id="chat-form">
+        {% csrf_token %}
+        <textarea name="question" id="question" placeholder="Escribe tu pregunta..." required></textarea>
+        <button type="submit" class = "button" id="ask-btn">Enviar Pregunta    <span></span>
+            <span></span>
+            <span></span>
+            <span></span></button>
+      </form>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Toggle chat window
-            $('#chatbot-btn').click(function() {
-                $('#chat-container').toggle();  // Muestra u oculta el contenedor del chat
-            });
-
-            // Enviar pregunta y obtener respuesta
-            $('#ask-btn').click(function() {
-                var question = $('#question').val();
-
-                if (question) {
-                    // Mostrar la pregunta en el chat
-                    $('#chat-content').append('<div class="message user-message">' + question + '</div>');
-                    $('#question').val('');  // Limpiar el campo de texto
-
-                    // Enviar la pregunta al backend
-                    $.ajax({
-                        type: "POST",
-                        url: "{% url 'ask_question' %}",  // URL de la vista en Django
-                        data: {
-                            'question': question,
-                            'csrfmiddlewaretoken': '{{ csrf_token }}'  // Seguridad en POST
-                        },
-                        success: function(response) {
-                            // Mostrar la respuesta en el chat
-                            $('#chat-content').append('<div class="message assistant-message">' + response.assistant_response + '</div>');
-                            $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);  // Desplazar al último mensaje
-                        },
-                        error: function() {
-                            alert("Hubo un error al procesar la solicitud.");
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Alternar visibilidad del contenedor de chat al hacer clic en el botón del chatbot
+      $('#chatbot-btn').click(function() {
+        $('#chat-container').toggle();
+      });
+  
+      // Manejo del formulario de chat usando AJAX
+      $('#chat-form').submit(function(e) {
+        e.preventDefault();
+        var question = $('#question').val().trim();
+  
+        if (question) {
+          // Agregar el mensaje del usuario al chat
+          $('#chat-content').append('<div class="message user-message">' + question + '</div>');
+          $('#question').val(''); // Limpiar textarea
+  
+          // Mostrar el ícono de "pensando"
+          $('#thinking-icon').show();
+  
+          // Enviar la pregunta al backend mediante AJAX
+          $.ajax({
+            type: "POST",
+            url: "{% url 'ask_question' %}",
+            data: {
+              'question': question,
+              'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+              // Ocultar el ícono de "pensando"
+              $('#thinking-icon').hide();
+              // Agregar la respuesta del asistente al chat
+              $('#chat-content').append('<div class="message assistant-message">' + response.assistant_response + '</div>');
+              // Desplazar el scroll hasta el final del contenedor
+              $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
+            },
+            error: function() {
+              $('#thinking-icon').hide();
+              alert("Hubo un error al procesar la solicitud.");
+            }
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
