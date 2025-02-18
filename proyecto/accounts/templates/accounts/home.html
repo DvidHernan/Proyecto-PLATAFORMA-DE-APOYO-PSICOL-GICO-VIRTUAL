@@ -10,17 +10,6 @@
 </head>
 <body>
   <h1>Bienvenido a la Plataforma</h1>
-  {% if user.is_authenticated %}
-    <div class="session-info">
-      <p>Bienvenido, {{ user.username }}</p>
-      <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class = "exit"><i class="fas fa-times-circle"></i>Cerrar sesión</button>
-      </form>
-    </div>
-  {% else %}
-    <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
-  {% endif %}
   
   <div class="funcionalidades-container">
     {% for func in funcionalidades %}
@@ -32,8 +21,11 @@
   </div>
   
   <!-- Botón flotante del Chatbot (imagen de gatito) -->
-  <div id="chatbot-btn" title="Chat con tu Asistente">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIHapIeCiwS7x6LmNiUMsGcyA3R8dgs-nSdQ&s" alt="Chatbot Gatito">
+  <div id="chatbot-container">
+    <div id="chatbot-btn" title="Chat con tu Asistente">
+      <img src="{% static 'accounts/images/gato.jpeg' %}" alt="Chatbot Gatito">
+    </div>
+    <p id="chatbot-status">🟢 En línea</p>
   </div>
   
   <!-- Contenedor del Chat -->
@@ -53,13 +45,26 @@
       <form id="chat-form">
         {% csrf_token %}
         <textarea name="question" id="question" placeholder="Escribe tu pregunta..." required></textarea>
-        <button type="submit" class = "button" id="ask-btn">Enviar Pregunta    <span></span>
+        <button type="submit" class = "button" id="ask-btn">Enviar Mensaje    <span></span>
             <span></span>
             <span></span>
             <span></span></button>
       </form>
     </div>
   </div>
+
+  <footer>
+    {% if user.is_authenticated %}
+      <div class="session-info">
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="exit"><i class="fas fa-times-circle"></i> Cerrar sesión</button>
+        </form>
+      </div>
+    {% else %}
+      <p><a href="{% url 'login' %}">Iniciar sesión</a></p>
+    {% endif %}
+  </footer>
   
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
