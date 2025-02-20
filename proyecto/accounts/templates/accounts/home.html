@@ -6,11 +6,47 @@
   <title>Home</title>
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/styles2.css' %}">
-   
+  <style>
+    .intro-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0ae2e3, #007991);
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+      max-width: 800px;
+    }
+    .intro-container img {
+      width: 180px;
+      height: auto;
+      margin-right: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .intro-container p {
+      font-size: 1.2em;
+      color: #ffffff;
+      font-weight: 500;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    .intro-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
   <h1>Bienvenido a la Plataforma</h1>
-  
+
+  <div class="intro-container" id="intro-section">
+    <img src="{% static 'accounts/images/intro.jpg' %}" alt="Introducción">
+    <p>Explora nuestras funcionalidades diseñadas para hacer tu experiencia más sencilla y eficiente.</p>
+  </div>
   <div class="funcionalidades-container">
     {% for func in funcionalidades %}
       <div class="funcionalidad">
@@ -110,6 +146,13 @@
           });
         }
       });
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      setTimeout(function() {
+        document.getElementById("intro-section").classList.add("show");
+      }, 500);
     });
   </script>
 </body>

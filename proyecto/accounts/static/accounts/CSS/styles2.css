@@ -4,8 +4,9 @@
     margin: 0;
     padding: 0;
     text-align: center;
-    background-color: #f4f4f9;
-    color: #333;
+    background-image: url('/static/accounts/images/texture.jpg');
+    background-size: cover;
+    background-repeat: repeat;
 }
 
 h1 {
