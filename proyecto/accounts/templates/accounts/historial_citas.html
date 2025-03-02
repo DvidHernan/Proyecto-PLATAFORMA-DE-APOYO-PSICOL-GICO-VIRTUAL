@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Citas</title>
+</head>
+<body>
+    <h1>Historial de Citas</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita.fecha }}</td>
+                <td>{{ cita.hora }}</td>
+                <td>{{ cita.estado }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No tienes citas programadas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br>
+    <a href="{% url 'home' %}">Volver al inicio</a>
+</body>
+</html>

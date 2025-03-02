@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.conf import settings  # Para obtener la API Key
 from django.http import JsonResponse
-from .models import Conversation, Message
+from .models import Conversation, Message, Cita
 from django.utils import timezone
 
 
@@ -50,9 +50,12 @@ def logout_view(request):
 @login_required
 def home_view(request):
     funcionalidades = [
-        {"nombre": "Agendar Cita", "descripcion": "Reserva una cita con un especialista."},
-        {"nombre": "Ver Historial", "descripcion": "Accede a tu historial de citas y sesiones."},
+        {"nombre": "Agendar Cita", "descripcion": "Reserva una cita con un especialista.", "url": 'agendar_cita'},
+        {"nombre": "Ver Historial", "descripcion": "Accede a tu historial de citas y sesiones.", "url": 'historial_citas'},
     ]
+    return render(request, 'accounts/home.html', {
+        'funcionalidades': funcionalidades,
+    })
     assistant_id = "asst_ecntz87UkJE85BVqeeyjei7Z"
     user_name = request.user.username
     
@@ -123,3 +126,27 @@ def home_view(request):
     })
 
     return redirect('home')  # Redirige a la página principal si no es POST
+
+@login_required
+def agendar_cita(request):
+    horarios_disponibles = []
+    today = timezone.now().date()
+
+    # Generamos los horarios disponibles de 9 am a 5 pm
+    for hora in range(9, 18):
+        horario = f"{hora}:00"
+        if not Cita.objects.filter(fecha=today, hora=horario).exists():
+            horarios_disponibles.append(horario)
+
+    if request.method == 'POST':
+        hora = request.POST['hora']
+        cita = Cita(usuario=request.user, fecha=today, hora=hora)
+        cita.save()
+        return redirect('home')  # Redirige al home después de agendar
+
+    return render(request, 'accounts/agendar_cita.html', {'horarios_disponibles': horarios_disponibles})
+
+@login_required
+def historial_citas(request):
+    citas = Cita.objects.filter(usuario=request.user).order_by('fecha', 'hora')
+    return render(request, 'accounts/historial_citas.html', {'citas': citas})

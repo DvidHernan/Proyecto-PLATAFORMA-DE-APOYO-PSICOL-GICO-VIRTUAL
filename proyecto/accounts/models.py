@@ -1,5 +1,4 @@
 from django.db import models
-from django.db import models
 from django.contrib.auth.models import User
 
 class Funcionalidad(models.Model):
@@ -18,3 +17,12 @@ class Message(models.Model):
     role = models.CharField(max_length=10, choices=[('user', 'Usuario'), ('assistant', 'Asistente')])
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+class Cita(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateField()
+    hora = models.TimeField()
+    estado = models.CharField(max_length=20, choices=[('pendiente', 'Pendiente'), ('confirmada', 'Confirmada'), ('cancelada', 'Cancelada')], default='pendiente')
+
+    def __str__(self):
+        return f"Cita de {self.usuario.username} el {self.fecha} a las {self.hora}"
