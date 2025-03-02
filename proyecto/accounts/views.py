@@ -9,7 +9,7 @@ from django.conf import settings  # Para obtener la API Key
 from django.http import JsonResponse
 from .models import Conversation, Message, Cita
 from django.utils import timezone
-
+from datetime import datetime, timedelta
 
 # Configuración de OpenAI
 client = OpenAI(api_key = settings.OPENAI_API_KEY)
@@ -131,20 +131,32 @@ def home_view(request):
 def agendar_cita(request):
     horarios_disponibles = []
     today = timezone.now().date()
-
-    # Generamos los horarios disponibles de 9 am a 5 pm
-    for hora in range(9, 18):
+    
+    # Permitir seleccionar fechas futuras
+    if request.method == 'POST':
+        fecha_str = request.POST['fecha']
+        hora = request.POST['hora']
+        fecha = datetime.strptime(fecha_str, "%Y-%m-%d").date()
+        
+        if fecha < today:
+            return JsonResponse({'error': 'No puedes agendar una cita en el pasado.'})
+        
+        horario = f"{hora}:00"
+        if Cita.objects.filter(fecha=fecha, hora=horario).exists():
+            return JsonResponse({'error': 'Este horario ya está reservado.'})
+        
+        cita = Cita(usuario=request.user, fecha=fecha, hora=hora)
+        cita.save()
+        return redirect('home')  # Redirige al home después de agendar
+    
+    # Generamos los horarios disponibles de 9 am a 5 pm para la fecha seleccionada
+    for hora in range(9, 17):
         horario = f"{hora}:00"
         if not Cita.objects.filter(fecha=today, hora=horario).exists():
             horarios_disponibles.append(horario)
+    
+    return render(request, 'accounts/agendar_cita.html', {'horarios_disponibles': horarios_disponibles, 'today': today})
 
-    if request.method == 'POST':
-        hora = request.POST['hora']
-        cita = Cita(usuario=request.user, fecha=today, hora=hora)
-        cita.save()
-        return redirect('home')  # Redirige al home después de agendar
-
-    return render(request, 'accounts/agendar_cita.html', {'horarios_disponibles': horarios_disponibles})
 
 @login_required
 def historial_citas(request):
