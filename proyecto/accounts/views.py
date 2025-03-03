@@ -53,9 +53,6 @@ def home_view(request):
         {"nombre": "Agendar Cita", "descripcion": "Reserva una cita con un especialista.", "url": 'agendar_cita'},
         {"nombre": "Ver Historial", "descripcion": "Accede a tu historial de citas y sesiones.", "url": 'historial_citas'},
     ]
-    return render(request, 'accounts/home.html', {
-        'funcionalidades': funcionalidades,
-    })
     assistant_id = "asst_ecntz87UkJE85BVqeeyjei7Z"
     user_name = request.user.username
     
